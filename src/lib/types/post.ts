@@ -12,8 +12,8 @@ export interface Post {
 }
 
 
-export interface PostsResponse {
-    post: Post[];
+export interface PostResponse {
+    posts: Post[];
     total: number;
     skip: number;
     limit: number;

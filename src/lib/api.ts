@@ -1,7 +1,7 @@
 import axios from "axios";
-import { PostsResponse } from "./types/post";
+import { type PostResponse } from "@/lib/types/post";
 
 export function fetchPosts() {
-    return axios.get<PostsResponse>('https://dummyjson.com/posts')
+    return axios.get<PostResponse>('https://dummyjson.com/posts')
     .then(response => response.data)
 }

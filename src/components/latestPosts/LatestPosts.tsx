@@ -1,6 +1,11 @@
 import { PlusIcon } from "@heroicons/react/24/solid";
 import { Button } from '@/components/ui/button';
 import styles from './latestPosts.module.css'
+import PostsList from "../ui/posts/PostsList";
+import { Suspense } from "react";
+import PostsSkeleton from "../ui/skeletons/PostsSkeleton";
+
+
 
 export default function LatestPosts() {
     return (
@@ -13,6 +18,9 @@ export default function LatestPosts() {
                     <PlusIcon className="size-6"/> Create Post
                 </Button>
             </div>
+            <Suspense fallback={<PostsSkeleton />}>
+                <PostsList />
+            </Suspense >
         </main>
     )
 }
