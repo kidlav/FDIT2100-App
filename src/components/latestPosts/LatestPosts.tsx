@@ -4,6 +4,7 @@ import styles from './latestPosts.module.css'
 import PostsList from "../ui/posts/PostsList";
 import { Suspense } from "react";
 import PostsSkeleton from "../ui/skeletons/PostsSkeleton";
+import ErrorBoundary from "@/components/errors/ErrorBoundary";
 
 
 
@@ -18,9 +19,11 @@ export default function LatestPosts() {
                     <PlusIcon className="size-6"/> Create Post
                 </Button>
             </div>
-            <Suspense fallback={<PostsSkeleton />}>
-                <PostsList />
-            </Suspense >
+            <ErrorBoundary message="Failed to load posts">
+                <Suspense fallback={<PostsSkeleton />}>
+                    <PostsList />
+                </Suspense >
+            </ErrorBoundary>
         </main>
     )
 }
