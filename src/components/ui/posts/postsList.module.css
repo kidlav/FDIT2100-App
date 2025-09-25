@@ -10,3 +10,7 @@
 .postLikesAndViews {
     @apply text-gray-500 text-sm font-semibold dark:text-gray-200;
 }
+
+.loadMoreButton {
+    @apply dark:text-gray-600 dark:bg-gray-200;
+}
