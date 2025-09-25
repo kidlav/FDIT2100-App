@@ -9,8 +9,8 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Header />
-        <Separator />
+        <Header/>
+        <Separator className="sticky top-19"/>
         <LatestPosts />
       </QueryClientProvider>
     </>

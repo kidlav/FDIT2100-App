@@ -4,11 +4,11 @@ import styles from './header.module.css'
 
 export default function Header() {
     return (
-        <header className='flex justify-between items-center px-10 pb-5 pt-4'>
+        <header className={styles.header}>
             <div className='flex'>
                 <h1 className='mr-8'>
                     <a href="/" className={`flex text-lg/1.3 font-extrabold ${styles.navlink}`}>
-                        <MegaphoneIcon className='size-8 mr-3'/> Connect                
+                        <MegaphoneIcon className='size-6 mr-3'/> Connect                
                     </a>
                 </h1>
                 <nav>

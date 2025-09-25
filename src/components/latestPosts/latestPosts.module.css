@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 .create_post_button {
     background-color: rgb(61 153 245);
     color: white;
@@ -5,3 +7,7 @@
     padding: 1.6rem 1.4rem;
     font-weight: 800;
     }
+
+.latest_posts_container {
+    @apply sticky top-[77px] flex justify-between pt-8 bg-white dark:bg-[#242424];
+}
