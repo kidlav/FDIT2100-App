@@ -1,3 +1,11 @@
+import type { Dispatch, SetStateAction } from "react";
+
+export interface PostsLastPageState {
+  page: number;
+  setPage: Dispatch<SetStateAction<number>>;
+}
+
+
 export interface Post {
     id: number;
     title: string;
@@ -24,3 +32,4 @@ export interface ClassnameProps {
     isPending: boolean;
     isTransitioning: boolean;
 }
+

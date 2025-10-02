@@ -2,13 +2,19 @@ import { PlusIcon } from "@heroicons/react/24/solid";
 import { Button } from '@/components/ui/button';
 import styles from './latestPosts.module.css'
 import PostsList from "../ui/posts/PostsList";
-import { Suspense } from "react";
+import { Suspense, useContext} from "react";
+import { PostsLastPageContext } from "@/lib/contexts/PostsLastPageContext";
 import PostsSkeleton from "../ui/skeletons/PostsSkeleton";
 import ErrorBoundary from "@/components/errors/ErrorBoundary";
 
 
 
 export default function LatestPosts() {
+    const context = useContext(PostsLastPageContext);
+    if (!context) {
+        throw new Error('LatestPosts must be used within a PostsPageProvider')
+    }
+    const { page, setPage } = context;
     return (
         <>
             <div className={styles.latest_posts_container}>
@@ -21,7 +27,7 @@ export default function LatestPosts() {
             </div>
             <ErrorBoundary message="Failed to load posts">
                 <Suspense fallback={<PostsSkeleton />}>
-                    <PostsList />
+                    <PostsList page={page} setPage={setPage}/>
                 </Suspense >
             </ErrorBoundary>
         </>
