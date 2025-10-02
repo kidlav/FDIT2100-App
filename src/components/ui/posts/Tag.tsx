@@ -1,3 +1,5 @@
+import styles from '@/components/ui/posts/postsList.module.css';
+
 interface Props {
     tag: string;
 
@@ -6,7 +8,7 @@ interface Props {
 export default function Tag(props: Props) {
     const {tag} = props;
     return (
-        <span className="bg-gray-100 text-gray-800 text-sm font-semibold mr-4 px-4 py-2 rounded-xl">
+        <span className={styles.spanTag}>
             {tag}
         </span>
     );

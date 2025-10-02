@@ -14,3 +14,11 @@
 .loadMoreButton {
     @apply dark:text-gray-600 dark:bg-gray-200;
 }
+
+.spanTag {
+    @apply bg-gray-100 text-gray-800 text-sm font-semibold mr-4 px-4 py-2 rounded-xl;
+}
+
+.imgPost {
+    @apply aspect-[7/4] h-42 object-cover ml-auto rounded-lg;
+}

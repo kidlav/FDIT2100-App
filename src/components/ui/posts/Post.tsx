@@ -33,7 +33,7 @@ export default function Props(props: Props) {
                         <span className={styles.postLikesAndViews}>{post.views} views</span>
                     </div>
                 </article>
-                <img src={`/photos/${post.id}.jpg`} alt={post.title} className="aspect-[7/4] h-42 object-cover ml-auto rounded-lg" />
+                <img src={`/photos/${post.id}.jpg`} alt={post.title} className={styles.imgPost} />
             </div>
             {!isLast && <Separator className="!w-auto mx-4 mt-5 mb-10"/>}
         </li>
