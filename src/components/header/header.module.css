@@ -8,6 +8,10 @@
     @apply text-slate-400;
 }
 
+.navlinkActive {
+    @apply text-sky-400 font-bold;
+}
+
 .header {
     @apply sticky top-0 flex justify-between items-center h-19 px-10 pb-2 bg-white dark:bg-[#242424];
 }
