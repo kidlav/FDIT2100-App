@@ -12,3 +12,8 @@ export function fetchMembers(): Promise<MembersResponse> {
     return axios.get(`${API_BASE_URL}/users`)
     .then(response => response.data);
 }
+
+export function FetchPostsByMember(memberId: number): Promise<PostResponse> {
+    return axios.get(`${API_BASE_URL}/posts/user/${memberId}`)
+    .then(response => response.data);
+}

@@ -5,6 +5,7 @@ import Members from "@/screens/members/Members";
 import Notifications from "@/screens/notifications/Notifications";
 import Messages from "@/screens/messages/Messages";
 import NotFound from "@/screens/notFound/NotFound";
+import PostsByMembers from "@/screens/members/PostsByMember";
 
 const routes: RouteObject[] = [
     {
@@ -19,6 +20,10 @@ const routes: RouteObject[] = [
             {
                 path: '/members',
                 Component: Members
+            },
+            {
+                path: '/members/:id/posts',
+                Component: PostsByMembers
             },
             {
                 path: '/notifications',

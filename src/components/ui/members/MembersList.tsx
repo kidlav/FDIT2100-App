@@ -1,5 +1,5 @@
 import { useSuspenseQuery} from "@tanstack/react-query";
-import Member from "./Member";
+import Member from "@/components/ui/members/member";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import { fetchMembers } from "@/lib/api";
 import { Input } from '@/components/ui/input';
