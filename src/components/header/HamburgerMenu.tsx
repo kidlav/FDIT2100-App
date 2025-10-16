@@ -16,14 +16,14 @@ import {
 
 
 interface MenuItem {
-    title: string,
-    href: string,
+    title: string;
+    href: string;
 
 }
 
 interface MenuItemProps {
-    item: MenuItem,
-
+    item: MenuItem;
+    clickHandler: () => void;
 }
 
 const menuItems: MenuItem[] = [
@@ -34,7 +34,7 @@ const menuItems: MenuItem[] = [
 
 ];
 
-const MenuItem = ({ item}: MenuItemProps) => {
+const MenuItem = ({ item, clickHandler }: MenuItemProps) => {
     return (
         <div className="flex items-center">
             {item.href === '/' && <MegaphoneIcon className="size-6 mr-3" />}
@@ -47,6 +47,7 @@ const MenuItem = ({ item}: MenuItemProps) => {
                         `block py-2 pl-9 ${styles.navLink}`,
                         item.href === '/' && 'pl-0'
                     )}
+                    onClick={clickHandler}
                 >
                     {item.title}
                 </NavLink>
@@ -71,7 +72,8 @@ export default function HamburgerMenu() {
                 <SheetDescription className="sr-only">Primary Navigation</SheetDescription>
                 <nav className="flex flex-col space-y-4 p-5">
                     {menuItems.map((item) => (
-                        <MenuItem key={item.title} item={item} />
+                        <MenuItem key={item.title} item={item} clickHandler={() =>
+                            setOpen(false)} />
                     ))}
                 </nav>
             </SheetContent>
