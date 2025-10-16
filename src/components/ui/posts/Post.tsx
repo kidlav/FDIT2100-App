@@ -20,6 +20,7 @@ export default function Props(props: Props) {
                 <article className="mr-4 ">
                     <h3 className='mb-1 text-xl font-semibold '>{post.title}</h3>
                     <p className={styles.postBody}>{post.body}</p>
+                <img src={`/photos/${post.id}.jpg`} alt={post.title} className={`${styles.imgPost} inline-block md:hidden`}/>
                     <div className="my-6 ">
                         {post.tags.map(tag=> (
                             <Tag key={tag} tag={tag} />
@@ -33,7 +34,7 @@ export default function Props(props: Props) {
                         <span className={styles.postLikesAndViews}>{post.views} views</span>
                     </div>
                 </article>
-                <img src={`/photos/${post.id}.jpg`} alt={post.title} className={styles.imgPost} />
+                <img src={`/photos/${post.id}.jpg`} alt={post.title} className={`${styles.imgPost} md:inline-block hidden`}/>
             </div>
             {!isLast && <Separator className="!w-auto mx-4 mt-5 mb-10"/>}
         </li>
