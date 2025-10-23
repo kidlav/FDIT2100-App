@@ -11,7 +11,8 @@ import {
     FormMessage} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useAppStore } from "@/lib/appStore";
-import styles from './Login.module.css'
+import styles from './Login.module.css';
+import { Navigate, useNavigate } from "react-router";
 
 
 
@@ -30,11 +31,16 @@ export default function Login() {
         }
     });
 
+const navigate = useNavigate();
     const { login } = useAppStore();
 
     const onLogin = useCallback(async (values: z.infer<typeof loginSchema>) => {
-        await login(values);
-    }, [login]);
+        const loginResult = await login(values);
+        if ( loginResult?.accessToken) {
+            navigate(-1);
+            return null;
+        }
+    }, [login, navigate]);
 
 
     return (
