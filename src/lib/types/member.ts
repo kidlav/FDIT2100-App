@@ -76,3 +76,25 @@ export interface MembersResponse {
     skip: number;
     limit: number;
 }
+
+
+export interface LoginCredentials {
+    username: string;
+    password: string;
+
+}
+
+
+export interface AuthResponse {
+    id: number;
+    firstname: string;
+    lastname: string;
+    username: string;
+    email: string;
+    gender: string;
+    image: string;
+    accessToken: string;
+    refreshToken: string;
+
+
+}
