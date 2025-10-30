@@ -45,6 +45,9 @@ const allTags = [
   "magical",
   "mystery",
 ];
+import { useAppStore } from "@/lib/appStore";
+import { toast } from "sonner";
+import { CREATE_POST_AUTH_NOTICE } from "@/lib/constants";
 
 const postSchema = z.object({
   title: z
@@ -68,6 +71,12 @@ export default function CreatePost() {
   });
 
   const navigate = useNavigate();
+
+  const { isAuthenticated } = useAppStore();
+
+  if (!isAuthenticated) {
+    toast.error(CREATE_POST_AUTH_NOTICE, { position: "top-right" });
+  }
 
   // ✅ Исправлено: t → availableTag
   const addTag = useCallback(
@@ -100,7 +109,7 @@ export default function CreatePost() {
     navigate(-1); // закрыть модалку
   };
 
-  return (
+  return isAuthenticated && (
     <Dialog
       defaultOpen={true}
       onOpenChange={(open) => {

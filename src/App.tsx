@@ -4,7 +4,7 @@ import Header from "@/components/header/Header";
 import { Separator } from "@/components/ui/Separator";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { PostsLastPageProvider } from "./lib/contexts/PostsLastPageProvider";
-
+import { Toaster } from "sonner";
 
 function App() {
   const queryClient = new QueryClient();
@@ -18,6 +18,7 @@ function App() {
             <Outlet/>
           </PostsLastPageProvider>
         </main>
+        <Toaster />
       </QueryClientProvider>
     </>
   );
