@@ -7,6 +7,8 @@ import Messages from "@/screens/messages/Messages";
 import NotFound from "@/screens/notFound/NotFound";
 import PostsByMembers from "@/screens/members/PostsByMember";
 import Login from "@/screens/login/login";
+import { Component } from "lucide-react";
+import CreatePost from "@/components/createPost/CreatePost";
 
 const routes: RouteObject[] = [
     {
@@ -14,8 +16,14 @@ const routes: RouteObject[] = [
         Component: App,
         children: [
             {
-                index:true,
-                Component: LatestPosts
+                path: '/',
+                Component: LatestPosts,
+                children: [
+                    {
+                        path: 'create-post',
+                        Component: CreatePost,
+                    }
+                ],
 
             },
             {
