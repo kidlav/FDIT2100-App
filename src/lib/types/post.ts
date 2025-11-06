@@ -33,3 +33,7 @@ export interface ClassnameProps {
     isTransitioning: boolean;
 }
 
+export interface PostsCacheState {
+    pageParams: number[];
+    pages: PostResponse[];
+}

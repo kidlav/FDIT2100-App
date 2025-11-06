@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import z from "zod";
 import { Button } from "../ui/button";
+import type { Post, PostsCacheState } from "@/lib/types/post";
 import {
   Dialog,
   DialogContent,
@@ -30,8 +31,13 @@ import {
   SelectGroup,
   SelectLabel,
 } from "../ui/select";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import TagChip from "./tagChip";
+import { useAppStore } from "@/lib/appStore";
+import { toast } from "sonner";
+import { CREATE_POST_AUTH_NOTICE } from "@/lib/constants";
+import { createPost } from "@/lib/api";
+import { useQueryClient } from "@tanstack/react-query";
 
 const allTags = [
   "american",
@@ -45,22 +51,18 @@ const allTags = [
   "magical",
   "mystery",
 ];
-import { useAppStore } from "@/lib/appStore";
-import { toast } from "sonner";
-import { CREATE_POST_AUTH_NOTICE } from "@/lib/constants";
 
 const postSchema = z.object({
-  title: z
-    .string()
-    .min(1, "Title is required, at least 1 character long."),
-  body: z
-    .string()
-    .min(1, "Body is required, at least 1 character long."),
+  title: z.string().min(1, "Title is required."),
+  body: z.string().min(1, "Body is required."),
 });
 
 export default function CreatePost() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [availableTags, setAvailableTags] = useState<string[]>(allTags);
+  const { isAuthenticated, user } = useAppStore();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof postSchema>>({
     resolver: zodResolver(postSchema),
@@ -70,15 +72,15 @@ export default function CreatePost() {
     },
   });
 
-  const navigate = useNavigate();
+  // Проверка авторизации
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast.error(CREATE_POST_AUTH_NOTICE, { position: "top-right" });
+      navigate(-1);
+    }
+  }, [isAuthenticated, navigate]);
 
-  const { isAuthenticated } = useAppStore();
-
-  if (!isAuthenticated) {
-    toast.error(CREATE_POST_AUTH_NOTICE, { position: "top-right" });
-  }
-
-  // ✅ Исправлено: t → availableTag
+  // Добавление тега
   const addTag = useCallback(
     (tag: string) => {
       if (tag && !selectedTags.includes(tag)) {
@@ -91,6 +93,7 @@ export default function CreatePost() {
     [selectedTags, availableTags]
   );
 
+  // Удаление тега
   const removeTag = useCallback(
     (tag: string) => {
       setSelectedTags(selectedTags.filter((t) => t !== tag));
@@ -99,17 +102,63 @@ export default function CreatePost() {
     [selectedTags, availableTags]
   );
 
-  // ✅ функция отправки формы
-  const onSubmit = (data: z.infer<typeof postSchema>) => {
-    console.log("New Post:", { ...data, selectedTags });
-    // здесь можно добавить fetch() для отправки поста
-    form.reset(); // очистить форму
-    setSelectedTags([]);
-    setAvailableTags(allTags);
-    navigate(-1); // закрыть модалку
+  // Сабмит формы
+  const onSubmit = async (data: z.infer<typeof postSchema>) => {
+    if (!user) {
+      toast.error("User not found");
+      return;
+    }
+
+    try {
+      const newPost: Post = await createPost(
+        user.id,
+        user.accessToken,
+        data.title,
+        data.body,
+        selectedTags
+      );
+
+      newPost.reactions = { likes: 0, dislikes: 0 };
+      newPost.views = 0;
+
+      queryClient.setQueryData(["posts"], (oldData?: PostsCacheState) => {
+        if (!oldData || !oldData.pages?.length) {
+          return {
+            pageParams: [0],
+            pages: [
+              {
+                posts: [newPost],
+                total: 1,
+                skip: 0,
+                limit: 10,
+              },
+            ],
+          };
+        }
+
+        const updatedPages = [...oldData.pages];
+        updatedPages[0] = {
+          ...updatedPages[0],
+          posts: [newPost, ...updatedPages[0].posts],
+        };
+
+        return { ...oldData, pages: updatedPages };
+      });
+
+      console.log("✅ Post created:", newPost);
+      toast.success("Post created successfully!", { position: "top-right" });
+
+      form.reset();
+      setSelectedTags([]);
+      setAvailableTags(allTags);
+      navigate(-1);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to create post.", { position: "top-right" });
+    }
   };
 
-  return isAuthenticated && (
+  return (
     <Dialog
       defaultOpen={true}
       onOpenChange={(open) => {
@@ -124,7 +173,7 @@ export default function CreatePost() {
           <DialogTitle className={styles.DialogTitle}>Create Post</DialogTitle>
         </DialogHeader>
 
-        {/* ✅ ФОРМА */}
+        {/* ФОРМА */}
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             {/* Title */}
@@ -174,7 +223,7 @@ export default function CreatePost() {
 
             <Select onValueChange={(value) => addTag(value)}>
               <SelectTrigger className="w-48">
-                <SelectValue placeholder="Select Tag">Select tags</SelectValue>
+                <SelectValue placeholder="Select Tag" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -188,7 +237,7 @@ export default function CreatePost() {
               </SelectContent>
             </Select>
 
-            {/* ✅ Кнопка сабмита */}
+            {/* Кнопка сабмита */}
             <DialogFooter className="mt-6">
               <Button
                 type="submit"
